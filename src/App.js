@@ -1,25 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const astrologerRoutes = require('./routes/astrologers');
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const app = express();
+const PORT = 3001;
 
-export default App;
+app.use(bodyParser.json());
+
+mongoose.connect('mongodb://localhost:27017/astrologersDB', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+app.use('/api/astrologers', astrologerRoutes);
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
